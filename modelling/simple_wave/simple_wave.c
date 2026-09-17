@@ -9,12 +9,12 @@
 int main(int argc, char *argv[]){
 
   float *field;
-  unsigned int nx=800;
-  unsigned int ny=400;
+  unsigned int nx=512;
+  unsigned int ny=512;
   float dx=0.5;
   float dy=0.5;
   float c=1.0;
-  float timestep=1.0;
+  float timestep=0.1;
   float *grad_x_field, *grad_y_field;
   float *grad2_x_field, *grad2_y_field;
   float *laplacian;
@@ -41,11 +41,11 @@ int main(int argc, char *argv[]){
   laplacian = allocate_2d_array(nx, ny);
 
   /* Set up a field that has a disturbance at the left side. */
-  for (ix=0; ix < nx10; ix++){
-    t=1.0*ix/(nx10-1.0);
+  for (iy=0; iy < ny; iy++){
+    t=1.0*iy/(ny-1.0);
     t=1.0 - t;
     val=sin(8.0*t*pi);
-    for (iy=0; iy < ny; iy++){
+    for (ix=0; ix < nx; ix++){
       field[indexof(ix,iy,nx)] = val;
     }
   }
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
     first=1;
     for (ix=0; ix < nx*ny; ix++){
       adj = -c*c*laplacian[ix]*timestep*timestep;
-      // fprintf(stdout,"Adustment to %g is %g\n", field[ix], adj);
+      fprintf(stdout,"Adustment to %g is %g\n", field[ix], adj);
       field[ix] = field[ix] + adj;
       if (first){
         first=0;
